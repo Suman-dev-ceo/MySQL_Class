@@ -15,5 +15,8 @@
   "bugs": {
     "url": "https://github.com/Suman-dev-ceo/MySQL_Class/issues"
   },
-  "homepage": "https://github.com/Suman-dev-ceo/MySQL_Class#readme"
+  "homepage": "https://github.com/Suman-dev-ceo/MySQL_Class#readme",
+  "dependencies": {
+    "mysql2": "^3.14.1"
+  }
 }
