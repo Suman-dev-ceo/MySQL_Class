@@ -5,6 +5,7 @@ const express = require('express');
 const app = express();
 const methodOverride = require('method-override');
 const { v4: uuidv4 } = require('uuid');
+const { rmSync } = require('fs');
 
 app.use(methodOverride('_method'));
 app.use(express.urlencoded({extended: true}));
@@ -119,6 +120,51 @@ app.post('/user',(req,res)=>{
   } catch(err){
     console.log(err);
     res.send('Some Error in Database');
+  }
+});
+
+app.get('/user/:id',(req,res)=>{
+    let {id} = req.params;
+    let q = `SELECT * FROM customer WHERE id = '${id}'`;
+    try{
+      connection.query(q,(err,result)=>{
+        if(err) throw err;
+        let user = (result[0]);
+        res.render('deleteUser.ejs',{user});
+      });
+    } catch(err){
+      console.log(err);
+      console.send('Some Error in Database');
+    }
+    
+});
+
+app.delete('/user/:id',(req,res)=>{
+  let {id} = req.params;
+  let {email: userEmail,password : userPass} = req.body;
+  let q = `SELECT * FROM customer WHERE id ='${id}' `;
+
+  try{
+    connection.query(q,(err,result)=>{
+      if(err) throw err;
+      let user = (result[0]);
+      let q2 = `DELETE FROM customer WHERE id ='${id}' `;
+      try{
+       if(userEmail == user.email && userPass == user.password){
+          connection.query(q2,(err,result)=>{
+          res.redirect('/users');
+        });
+       }else {
+        res.send('Wrong Email or Password');
+       }
+      } catch(err){
+        console.log(err);
+        res.send('Some Error in Database');
+      }
+    });
+  } catch(err) {
+    console.log(err);
+    console.send('Some Error in Database');
   }
 });
 
