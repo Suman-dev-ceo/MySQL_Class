@@ -148,19 +148,18 @@ app.delete('/user/:id',(req,res)=>{
     connection.query(q,(err,result)=>{
       if(err) throw err;
       let user = (result[0]);
-      let q2 = `DELETE FROM customer WHERE id ='${id}' `;
-      try{
-       if(userEmail == user.email && userPass == user.password){
+      
+       
+       if(userEmail != user.email || userPass != user.password){
+          res.send('Wrong Email or Password');
+          
+       }else {
+        let q2 = `DELETE FROM customer WHERE id ='${id}' `;
           connection.query(q2,(err,result)=>{
           res.redirect('/users');
         });
-       }else {
-        res.send('Wrong Email or Password');
        }
-      } catch(err){
-        console.log(err);
-        res.send('Some Error in Database');
-      }
+        
     });
   } catch(err) {
     console.log(err);
