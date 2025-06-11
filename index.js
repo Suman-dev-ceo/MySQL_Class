@@ -5,7 +5,7 @@ const express = require('express');
 const app = express();
 const methodOverride = require('method-override');
 const { v4: uuidv4 } = require('uuid');
-const { rmSync } = require('fs');
+
 
 app.use(methodOverride('_method'));
 app.use(express.urlencoded({extended: true}));
